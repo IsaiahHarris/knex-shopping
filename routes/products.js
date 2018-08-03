@@ -20,7 +20,7 @@ router.get('/', (req,res)=>{
 
 router.get('/:product_id', (req, res)=>{
   const id = req.params.product_id;
-  db.raw('SELECT id FROM products WHERE id = ?', [id])
+  db.raw('SELECT id, title FROM products WHERE id = ?', [id])
   .then(result=>{
     if(!result || !result.rowCount){
       return res.json({ "message": "Product not found" })
@@ -35,6 +35,24 @@ router.get('/:product_id', (req, res)=>{
     res.send('there has been an error');
   })
 })
+
+router.post('/new', (req, res)=>{
+  const body = req.body;
+  // const fields = [body.title, body.description, body.inventory, body.price];
+  if(!body.title || !body.description || !body.inventory || !body.price){
+    return res.json({ "message": "Must POST all product fields" })
+  }else {
+    return db.raw('INSERT INTO products(title, description, inventory, price) VALUES (?, ?, ?, ?) RETURNING *', [body.title, body.description, body.inventory, body.price])
+    .then(result=>{
+      return res.json(result.rows);
+    })
+    .catch(err=>{
+      console.log(err);
+      res.send('there was an error');
+    })
+  }
+})
+
 
 
 module.exports = router;

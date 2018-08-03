@@ -41,3 +41,15 @@ VALUES(
   'password'
 )
 RETURNING *;
+
+INSERT INTO products
+VALUES(
+  default,
+  'phone',
+  'for texting',
+  1,
+  1000,
+  default,
+  default
+)
+RETURNING *;
