@@ -1,7 +1,8 @@
 \c postgres
 
-DROP DATABASE IF EXISTS knex_shopping;
 DROP USER IF EXISTS knex_user;
+DROP DATABASE IF EXISTS knex_shopping;
+
 
 CREATE USER knex_user WITH PASSWORD 'password';
 CREATE DATABASE knex_shopping WITH OWNER knex_user;
@@ -23,7 +24,7 @@ CREATE TABLE products (
   inventory INTEGER,
   price DECIMAL(8,2),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP NOT NULL DEFUALT now()
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 CREATE TABLE cart (
