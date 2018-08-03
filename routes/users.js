@@ -50,14 +50,14 @@ router.post('/login', (req, res) => {
 
 router.post('/register', (req, res) => {
   const data = req.body;
-  return db.raw('SELECT email FROM users WHERE email = ?',[data.email])
+  return db.raw('SELECT email FROM users WHERE email = ?', [data.email])
     .then(result => {
       if (!result || !result.rowCount) {
         return db.raw('INSERT INTO users (email, password) VALUES (?, ?) RETURNING *', [data.email, data.password])
-      }else {
-        return res.status(400).json({"message": "User already exists"});
+      } else {
+        return res.status(400).json({ "message": "User already exists" });
       }
-      
+
     })
     .then(newUser => {
       return res.json(newUser.rows);
@@ -68,45 +68,45 @@ router.post('/register', (req, res) => {
     })
 })
 
-router.put('/:user_id/forgot-password', (req,res)=>{
+router.put('/:user_id/forgot-password', (req, res) => {
   const id = req.params.user_id;
   return db.raw('SELECT password FROM users WHERE id = ?', [id])
-  .then(result=>{
-    if (!result || !result.rowCount){
-      res.status(404).send('could not find user under that id');
-    }
-    return result;
-  })
-  .then(result=>{
-    return db.raw('UPDATE users SET password = ? WHERE id = ? RETURNING *' , [req.body.password, id])
-  })
-  .then(result=>{
-    return res.json({"message": "New password created"})
-  })
-  .catch(err=>{
-    console.log(err);
-    res.send('there has been an error');
-  })
+    .then(result => {
+      if (!result || !result.rowCount) {
+        res.status(404).send('could not find user under that id');
+      }
+      return result;
+    })
+    .then(result => {
+      return db.raw('UPDATE users SET password = ? WHERE id = ? RETURNING *', [req.body.password, id])
+    })
+    .then(result => {
+      return res.json({ "message": "New password created" })
+    })
+    .catch(err => {
+      console.log(err);
+      res.send('there has been an error');
+    })
 })
 
-router.delete('/:user_id', (req, res)=>{
+router.delete('/:user_id', (req, res) => {
   const id = req.params.user_id;
   return db.raw('SELECT id FROM users WHERE id = ?', [id])
-  .then(result=>{
-    if(!result || !result.rowCount){
-      res.json({ "message": "User ID not found" })
-    }
-    return result;
-  })
-  .then(result=>{
-    return db.raw('DELETE FROM users WHERE id = ? RETURNING *', [id])
-  })
-  .then(result=>{
-    return res.json({ "message": "User id: [user_id] successfully deleted" })
-  })
-  .catch(err=>{
-    console.log(err);
-    res.send('there has been an error');
-  })
+    .then(result => {
+      if (!result || !result.rowCount) {
+        res.json({ "message": "User ID not found" })
+      }
+      return result;
+    })
+    .then(result => {
+      return db.raw('DELETE FROM users WHERE id = ? RETURNING *', [id])
+    })
+    .then(result => {
+      return res.json({ "message": "User id: [user_id] successfully deleted" })
+    })
+    .catch(err => {
+      console.log(err);
+      res.send('there has been an error');
+    })
 })
 module.exports = router;
