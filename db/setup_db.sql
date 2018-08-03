@@ -10,8 +10,18 @@ CREATE DATABASE knex_shopping WITH OWNER knex_user;
 
 CREATE TABLE users(
   id serial NOT NULL PRIMARY KEY,
-  email VARCHAR(255), NOT NULL,
+  email VARCHAR(255) NOT NULL,
   password VARCHAR(255),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
+
+CREATE TABLE products (
+  id serial NOT NULL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  inventory INTEGER,
+  price DECIMAL(8,2),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFUALT now()
+)
