@@ -34,3 +34,10 @@ CREATE TABLE cart (
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
+
+INSERT INTO users(email, password)
+VALUES(
+  'litaf@litaf.com',
+  'password'
+)
+RETURNING *;
