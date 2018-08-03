@@ -38,7 +38,7 @@ CREATE TABLE cart (
 CREATE TABLE purchases(
   id serial NOT NULL PRIMARY KEY,
   user_id integer REFERENCES users(id),
-  p.products_id integer REFERENCES products(id),
+  products_id integer REFERENCES products(id),
   created_at TIMESTAMP NOT NULL DEFAULT now()
 );
 

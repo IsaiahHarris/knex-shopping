@@ -110,20 +110,44 @@ router.delete('/:user_id', (req, res) => {
     })
 })
 
-// router.get('/:user_id/purchases/:product_id',(req,res)=>{
-//   const userId = req.params.user_id;
-//   const productId = req.params.product_id;
+router.get('/:user_id/purchases/:product_id',(req,res)=>{
+  const userId = req.params.user_id;
+  const productId = req.params.product_id;
 
-//   return db.raw('SELECT * FROM purchases INNER JOIN products ON p.products_id = products.id WHERE user_id = ?', [userId])
-//   .then(result=>{
-//     const inventory = result.rows[0].inventory;
-//     return db.raw('UPDATE products SET inventory = ? WHERE id = ?'[inventory, productId])
-//   })
-//   .then(result=>{
-//     return res.json(result.rows[0]);
-//   })
-//   .catch(err=>{
-//     console.log(err);
-//   })
-// })
+  return db.raw('SELECT * FROM purchases WHERE user_id = ? AND products_id = ?', [userId, productId])
+  .then(result=>{
+    if(!result || !result.rowCount){
+      return res.send({"message": "your search could not be found"});
+    }
+    return result;
+  })
+  .then(result=>{
+    return res.json(result.rows);
+  })
+  .catch(err=>{
+    console.log(err);
+    res.send('an error happened');
+  })
+})
+
+router.post('/:user_id/purchases/:product_id', (req,res)=>{
+const userId = req.params.user_id;
+const productId = req.params.product_id;
+return db.raw('SELECT * FROM purchases JOIN products ON purchases.products_id = products.id WHERE user_id = ? AND products_id = ?', [userId, productId])
+.then(result=>{
+  if(!result || !result.rowCount){
+    return res.status(400).json({"message":"could not be found"})
+  }
+  return result;
+})
+.then(result=>{
+  let inventory = result.rows[0].inventory;
+  inventory-=1;
+  return db.raw('UPDATE products SET inventory = ? WHERE id = ? RETURNING *', [inventory, productId]);
+})
+.then(result => {
+  res.json(result.rows[0]);
+})
+.catch(err => console.log(err));
+})
 module.exports = router;
