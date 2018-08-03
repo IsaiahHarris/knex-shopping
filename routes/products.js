@@ -70,4 +70,25 @@ router.put('/:product_id', (req, res)=>{
   })
 })
 
+router.delete('/product_id', (req,res)=>{
+  const id = req.params.product_id;
+  return db.raw('SELECT * FROM products WHERE id = ?', [id])
+  .then(result=>{
+    if(!result || !result.rowCount){
+      return res.status(404).json({"message":"Product under that id could not be found"})
+    }
+    return result;
+  })
+  .then(result=>{
+    return db.raw('DELETE from products WHERE id = ?', [id]);
+  })
+  .then(result=>{
+    return res.json({"message":"product successfully deleted"});
+  })
+  .catch(err=>{
+    console.log(err);
+    res.send('there has been an error');
+  })
+
+})
 module.exports = router;
