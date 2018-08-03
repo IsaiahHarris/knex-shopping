@@ -53,6 +53,21 @@ router.post('/new', (req, res)=>{
   }
 })
 
-
+router.put('/:product_id', (req, res)=>{
+  const id = req.params.product_id;
+  const data = req.body;
+  return db.raw('UPDATE products SET title = ?, description = ?, inventory = ?, price = ?', [data.title, data.description, data.inventory, data.price])
+  .then(result=>{
+    if (!result || !result.rowCount){
+      return res.json({"message": "could not find product under that id"})
+    }else {
+      return res.json({ "message": "Product: [product_id] has been updated" })
+    }
+  })
+  .catch(err=>{
+    console.log(err);
+    res.send('there was an error');
+  })
+})
 
 module.exports = router;
