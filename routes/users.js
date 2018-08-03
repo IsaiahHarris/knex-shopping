@@ -109,4 +109,21 @@ router.delete('/:user_id', (req, res) => {
       res.send('there has been an error');
     })
 })
+
+// router.get('/:user_id/purchases/:product_id',(req,res)=>{
+//   const userId = req.params.user_id;
+//   const productId = req.params.product_id;
+  
+//   return db.raw('SELECT * FROM purchases INNER JOIN products ON p.products_id = products.id WHERE user_id = ?', [userId])
+//   .then(result=>{
+//     const inventory = result.rows[0].inventory;
+//     return db.raw('UPDATE products SET inventory = ? WHERE id = ?'[inventory, productId])
+//   })
+//   .then(result=>{
+//     return res.json(result.rows[0]);
+//   })
+//   .catch(err=>{
+//     console.log(err);
+//   })
+// })
 module.exports = router;

@@ -35,6 +35,14 @@ CREATE TABLE cart (
   updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
+CREATE TABLE purchases(
+  id serial NOT NULL PRIMARY KEY,
+  user_id integer REFERENCES users(id),
+  p.products_id integer REFERENCES products(id),
+  created_at TIMESTAMP NOT NULL DEFAULT now()
+);
+
+
 INSERT INTO users(email, password)
 VALUES(
   'litaf@litaf.com',
@@ -51,5 +59,12 @@ VALUES(
   1000,
   default,
   default
+)
+RETURNING *;
+
+INSERT INTO purchases (user_id, products_id)
+VALUES(
+  '1',
+  '1'
 )
 RETURNING *;

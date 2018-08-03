@@ -89,6 +89,5 @@ router.delete('/product_id', (req,res)=>{
     console.log(err);
     res.send('there has been an error');
   })
-
 })
 module.exports = router;
