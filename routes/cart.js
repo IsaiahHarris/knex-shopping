@@ -45,4 +45,25 @@ router.post('/:user_id/:product_id', (req, res) => {
     })
 })
 
+router.delete('/:user_id/:product_id', (req,res)=>{
+  const userId = req.params.user_id;
+  const productId = req.params.product_id;
+  return db.raw('SELECT * FROM cart WHERE user_id = ? AND products_id = ?', [userId, productId])
+  .then(result=>{
+    if(!result || !result.rowCount){
+      return res.status(404).json({"message": "cannot find item in cart under that user and product"})
+    }
+    return result
+  })
+  .then(result=>{
+    return db.raw('DELETE FROM cart WHERE user_id = ? and products_id = ?', [userId, productId])
+  })
+  .then(result=>{
+    return res.json({ "success": true })
+  })
+  .catch(err=>{
+    res.send('there has been an error')
+  })
+})
+
 module.exports = router;
