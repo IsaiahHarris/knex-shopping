@@ -113,7 +113,7 @@ router.delete('/:user_id', (req, res) => {
 // router.get('/:user_id/purchases/:product_id',(req,res)=>{
 //   const userId = req.params.user_id;
 //   const productId = req.params.product_id;
-  
+
 //   return db.raw('SELECT * FROM purchases INNER JOIN products ON p.products_id = products.id WHERE user_id = ?', [userId])
 //   .then(result=>{
 //     const inventory = result.rows[0].inventory;
