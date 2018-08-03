@@ -24,4 +24,12 @@ CREATE TABLE products (
   price DECIMAL(8,2),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP NOT NULL DEFUALT now()
-)
+);
+
+CREATE TABLE cart (
+  id serial NOT NULL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  products_id INTEGER REFERENCES products(id),
+  created_at TIMESTAMP NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
